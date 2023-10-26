@@ -291,12 +291,45 @@ transition: slide-up
 
 ---
 transition: slide-up
+layout: two-cols-header
 ---
 
-## DDPM | Sampling
+## Ancestral sampling algorithm
 
-<div class="flex justify-center">
-<img src="diagrams/sampling.drawio.png" class="w-100 mt-10">
+::left::
+
+<div class="flex h-95% align-center justify-center">
+
+<div class="flex h-100% flex-col justify-center">
+
+<v-clicks>
+
+* Start by sampling $x_T \sim \mathcal N(0,I)$
+* For $t=T \dots, 1$ do:
+    * $z \sim \mathcal{N}(0,I)$ if $t > 1$ else $z=0$
+    * $x_{t-1} = \mu_\theta(x_t, t) + \tilde\beta_tz$ 
+* Return $x_0$
+
+</v-clicks>
+
+<br>
+
+<v-click>
+
+Takes $O(T)$ time to run (usually $T \approx 1000)$.
+
+</v-click>
+
+</div>
+
+</div>
+
+::right::
+
+<div class="flex flex-row content-center justify-center">
+
+<img src="/diagrams/sampling.drawio.png" class="w-45"/>
+
 </div>
 
 
