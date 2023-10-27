@@ -306,8 +306,8 @@ layout: two-cols-header
 
 * Start by sampling $x_T \sim \mathcal N(0,I)$
 * For $t=T \dots, 1$ do:
-    * $z \sim \mathcal{N}(0,I)$ if $t > 1$ else $z=0$
-    * $x_{t-1} = \mu_\theta(x_t, t) + \tilde\beta_tz$ 
+    * $\epsilon \sim \mathcal{N}(0,I)$ if $t > 1$ else $\epsilon=0$
+    * $x_{t-1} = \mu_\theta(x_t, t) + \sqrt{\tilde\beta_t} \epsilon$ 
 * Return $x_0$
 
 </v-clicks>
@@ -378,7 +378,7 @@ transition: slide-up
 
 <img src="\diagrams\closed_form_1.drawio.png" class="w-70% mt-5">
 
-* We can express $x_0$ as a function of $x_1$ and $\epsilon$
+* We can express $x_0$ as a function of $x_t$ and $\epsilon$
 
 <img src="\diagrams\get_x0_out.drawio.png" class="w-85% mt-2">
 
