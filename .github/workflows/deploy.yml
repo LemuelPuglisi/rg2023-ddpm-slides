@@ -30,7 +30,7 @@ jobs:
         run: npm install
 
       - name: Install slidev
-        run:  npm i -g @slidev/cli
+        run:  npm i -g @slidev/cli @slidev/theme-default
 
       - name: Build
         run: slidev build --base /rg2023-ddpm-slides/
