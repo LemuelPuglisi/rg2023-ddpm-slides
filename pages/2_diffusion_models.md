@@ -87,7 +87,7 @@ $$
 q(x_t \mid x_0) = \mathcal{N}(x_t \mid \sqrt{\bar\alpha_t} x_0, (1-\bar\alpha_t)I )
 $$
 
-Where $\bar\alpha_t = \alpha_1\alpha_2\dots\alpha_t$ and $\alpha_t = 1 - \beta_i$.
+Where $\bar\alpha_t = \alpha_1\alpha_2\dots\alpha_t$ and $\alpha_i = 1 - \beta_i$.
 
 Using the reparameterization trick:
 
