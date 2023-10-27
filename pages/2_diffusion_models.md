@@ -99,7 +99,7 @@ transition: slide-left
 
 <v-click>
 
-We can jump from the original image $x_0$ to an arbitrary diffusion step $x_t$ using the following closed form solution:
+Jump from the original image $x_0$ to an arbitrary diffusion step $x_t$ using the following closed form solution:
 
 $$
 q(x_t \mid x_0) = \mathcal{N}(x_t \mid \sqrt{\bar\alpha_t} x_0, (1-\bar\alpha_t)I )
@@ -180,7 +180,7 @@ transition: slide-up
 
 <v-click>
 
-* But we can use this results in other ways...
+* But we can use this results in another other way...
 
 </v-click>
 
@@ -241,7 +241,7 @@ transition: slide-up
 
 ## Training the network
 
-🖥️ Prepare your GPUs.
+🖥️ Time to unleash the GPUs army.
 
 ---
 transition: slide-up
@@ -253,7 +253,7 @@ transition: slide-up
 
 <v-click>
 
-We want to maximize the likelihood of the model against a dataset $\{x^{(i)}\}_{i=1}^N$ of samples from our target distribution $x^{(i)} \sim q(x)$.
+We want to maximize the likelihood of the model against a dataset $\{x^{(i)}\}_{i=1}^N$ of samples from our target distribution $x^{(i)} \sim p(x)$.
 
 </v-click>
 
@@ -354,7 +354,7 @@ The training loop is the following:
 <v-clicks>
 
 * Pick an image $x_0$ from the dataset 
-* Draw a diffusion step $t$ randomly from ${1, \dots, T}$
+* Draw a diffusion step $t$ randomly from $\{1, \dots, T\}$
 * Compute the loss term $-L_{t-1}$
 * Update the weights $\theta$ of the U-Net by gradient descent 
 
@@ -369,7 +369,7 @@ transition: slide-up
 
 ## Sampling process
 
-🖼️ Generating brand new images!
+🖼️ Generating new images from the target distribution.
 
 ---
 transition: slide-up
@@ -422,7 +422,7 @@ transition: slide-up
 
 ## Simplifying everything by predicting the noise
 
-🪄 Seems like magic, but it's still math.
+🦾 Hang in there! It's the last section.
 
 ---
 transition: slide-up
@@ -430,7 +430,7 @@ transition: slide-up
 
 ## DDPM | Quick refresh
 
-* Before proceeding, here's a refresh of the closed forms we have:
+* Before proceeding, here's a recap of the closed forms we have:
 
 <v-click>
 
