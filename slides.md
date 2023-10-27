@@ -1,8 +1,8 @@
 ---
 transition: fade-out
 fonts:
-  sans: Garamond
-  serif: Garamond
+  sans: EB Garamond
+  serif: EB Garamond
   mono: Fira Code
 ---
 
