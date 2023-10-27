@@ -87,7 +87,7 @@ $$
 
 <v-click>
 
-<img src="\diagrams\reparameterization.drawio.png" class="w-90% mt-10">
+<img src="/diagrams/reparameterization.drawio.png" class="w-90% mt-10">
 
 </v-click>
 
@@ -113,7 +113,7 @@ Where $\bar\alpha_t = \alpha_1\alpha_2\dots\alpha_t$ and $\alpha_i = 1 - \beta_i
 
 Using the reparameterization trick:
 
-<img src="\diagrams\closed_form_1.drawio.png" class="w-90% mt-5">
+<img src="/diagrams/closed_form_1.drawio.png" class="w-90% mt-5">
 
 </v-click>
 
@@ -162,7 +162,7 @@ $$
 
 * We can reverse the forward process <span color='yellow'>if we know the starting image $x_0$</span>
 
-<img src="\diagrams\closed_form_2.drawio.png" class="w-90%">
+<img src="/diagrams/closed_form_2.drawio.png" class="w-90%">
 
 </v-click>
 
@@ -176,7 +176,7 @@ transition: slide-up
 
 * Problem: we don't have $x_0$ at inference time, we want to generate $x_0$!
 
-<img src="\diagrams\closed_form_2_not_available.drawio.png" class="w-90% mt-5">
+<img src="/diagrams/closed_form_2_not_available.drawio.png" class="w-90% mt-5">
 
 <v-click>
 
@@ -226,7 +226,7 @@ $$
 
 <v-click>
 
-<img src="diagrams/unet.drawio.png"/>
+<img src="/diagrams/unet.drawio.png"/>
 
 </v-click>
 
@@ -476,7 +476,7 @@ transition: slide-up
 
 * We can sample from $q(x_t \mid x_0)$ by using the reparameterization trick:
 
-<img src="\diagrams\closed_form_1.drawio.png" class="w-70% mt-5">
+<img src="/diagrams/closed_form_1.drawio.png" class="w-70% mt-5">
 
 </v-click>
 
@@ -484,7 +484,7 @@ transition: slide-up
 
 * We can express $x_0$ as a function of $x_t$ and $\epsilon$
 
-<img src="\diagrams\get_x0_out.drawio.png" class="w-85% mt-2">
+<img src="/diagrams/get_x0_out.drawio.png" class="w-85% mt-2">
 
 </v-click>
 
@@ -504,7 +504,7 @@ transition: slide-up
 <v-click>
 
 <div class="w-100% flex flex-row justify-center">
-<img src="\diagrams\change_dep_on_mu.drawio.png" class="w-85% mt-2">
+<img src="/diagrams/change_dep_on_mu.drawio.png" class="w-85% mt-2">
 </div>
 
 </v-click>
