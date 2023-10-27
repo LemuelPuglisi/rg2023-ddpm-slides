@@ -294,7 +294,7 @@ transition: slide-up
 layout: two-cols-header
 ---
 
-## Ancestral sampling algorithm
+## DDPM | Ancestral sampling
 
 ::left::
 
@@ -342,118 +342,82 @@ transition: slide-up
 
 🪄 Seems like magic, but it's still math.
 
-
----
-layout: cover
-transition: slide-up
----
-
-## Conditional generation
-
-🏎️ Driving our generative model!
-
-
 ---
 transition: slide-up
 ---
 
-## Diffusion models | Conditional generation
+## DDPM | Quick refresh
 
-* Objective: learn a conditional distribution $p(x \mid y)$, which enable us to explicitly control the data we generate through conditioning information y.
-
-<div class="flex flex-row justify-around">
-
-<div class="flex flex-col justify-center items-center">
-<p class="remove-par-m w-70 text-center">
-
-$y$ as `class label`
-
-</p>
-<img src="/hamburger.png" class="w-50"/>
-
-<p class="remove-par-m text-center"> 
-
-$y=\text{hamburger}$ 
-
-</p>
-</div> 
-
-<div class="flex flex-col justify-center items-center">
-<p class="remove-par-m w-70 text-center">
-
-$y$ as `text-prompt`
-
-</p>
-<img src="/bear-prompt.png" class="w-40 text-center"/>
-
-<p class="remove-par-m w-100 text-center"> 
+* Before proceeding, here's a refresh of the closed forms we have:
 
 $$
-y= \text{``Teddy bears working} \\
-\text{underwater with 1990s technology"} 
-$$ 
+\color{#44cb75}q(x_t \mid x_0) = \mathcal{N}(x_t \mid \sqrt{\bar\alpha_t} x_0, (1-\bar\alpha_t)I )
+$$
 
-</p>
+$$
+\color{#22d3ee}q\left(x_{t-1}\mid x_t, x_0\right) = \mathcal N( x_{t-1}; \color{#fb923c}\tilde\mu(x_t, x_0)\color{#22d3ee}, \tilde\beta_t I )
+$$
 
-</div> 
+$$
+\color{#fb923c}\tilde\mu(x_t, x_0) = \frac{\sqrt{\bar{\alpha}_{t-1}}\beta_t}{1-\bar{\alpha}_t}x_0 +\frac{\sqrt{\alpha_t}(1-\bar{\alpha}_{t-1})}{1-\bar{\alpha}_t} x_t
+$$
 
-</div>
+* And our U-Net architecture is trained to approximate $\mu_\theta(x_t, t) \approx \tilde\mu(x_t, x_0)$ such that:
+
+$$
+\color{#22d3ee}p_\theta\left(x_{t-1}\mid x_t\right) = \mathcal N( x_{t-1}; \color{#fb923c}\mu_\theta(x_t, t) \color{#22d3ee}, \tilde\beta_t I )
+$$
 
 ---
 transition: slide-up
 ---
 
-## Diffusion models | Conditional generation
+## DDPM | Noise reparameterization
 
-<div class="flex flex-row mt-5">
-    <div class="flex flex-col items-center" v-click>
-        <h3>Classifier guidance</h3>
-        <img src="/diagrams/classifier-guidance.drawio.png" class="mt-5 w-90%"/>
-    </div>
-    <div class="flex flex-col items-center" v-click>
-        <h3>Classifier-free guidance</h3>
-        <img src="/diagrams/classifier-free-guidance.drawio.png" class="mt-5 w-90%" />
-    </div>
+* We can sample from $q(x_t \mid x_0)$ by using the reparameterization trick:
+
+<img src="\diagrams\closed_form_1.drawio.png" class="w-70% mt-5">
+
+* We can express $x_0$ as a function of $x_1$ and $\epsilon$
+
+<img src="\diagrams\get_x0_out.drawio.png" class="w-85% mt-2">
+
+---
+transition: slide-up
+---
+
+## DDPM | Noise reparameterization
+
+* Replace $x_0$ from $\tilde\mu(x_t, x_0)$ and introduce a dependency on $\epsilon$:
+
+<div class="w-100% flex flex-row justify-center">
+<img src="\diagrams\change_dep_on_mu.drawio.png" class="w-85% mt-2">
 </div>
 
 ---
-transition: slide-left
+layout: image
+transition: slide-up
+image: diagrams/explanation.png
 ---
 
-## Diffusion models | Comparison
+---
+transition: slide-up
+---
 
-<div class="flex flex-row flex-wrap justify-around">
+## DDPM | Predicting the noise
 
-<div class="m-2">
+* Key idea: predict the noise using the U-Net $\epsilon_\theta(x_t, t) \approx \epsilon$
+* Use the predicted noise to get the mean as follows:
 
-GAN
-* <span class="text-green">High quality samples</span>
-* <span class="text-green">Fast sampling process</span>
-* <span class="text-red">Low diversity</span>
+$$
+\mu_\theta(x_t, t) = \frac{1}{\sqrt{\alpha_t}}\left( x_t - \frac{\beta_t}{\sqrt{1-\bar{\alpha_t}}} \color{#44cb75}\epsilon_\theta(x_t, t) \color{white} \right)
+$$
 
-</div>
+Training is trivial:
 
-<div class="m-2">
+* Draw $x_0$ from the dataset and $t \in \{0, \dots, T\}$ randomly
+* Sample $\epsilon \sim \mathcal{N}(0,I)$
+* Compute $x_t = \sqrt{\bar\alpha_t} x_0 + \sqrt{1 - \bar\alpha_t}\epsilon$
+* Predict $\hat\epsilon = \epsilon_\theta(x_t, t)$
+* Minimize $\lVert \hat\epsilon - \epsilon \rVert_2^2$
 
-VAE
-* <span class="text-red">Low quality samples</span>
-* <span class="text-green">Fast sampling process</span>
-* <span class="text-green">High diversity</span>
-
-</div>
-
-<div class="m-2">
-
-Diffusion models
-* <span class="text-green">High quality samples</span>
-* <span class="text-red">Slow sampling process</span>
-* <span class="text-green">High diversity</span>
-
-</div>
-
-<div class="flex flex-col justify-center items-center w-100%">
-    <img src="/diagrams/generative-trilemma.drawio.png" class="w-50">
-    <small>Generative learning trilemma (Xiao et al., 2022)</small>
-</div>
-
-</div>
