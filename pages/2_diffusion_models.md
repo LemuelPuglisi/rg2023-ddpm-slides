@@ -384,7 +384,7 @@ layout: two-cols-header
 
 <div class="flex h-100% flex-col justify-center">
 
-<v-clicks>
+<v-clicks depth=2>
 
 * Start by sampling $x_T \sim \mathcal N(0,I)$
 * For $t=T \dots, 1$ do:
@@ -424,91 +424,62 @@ transition: slide-up
 
 🦾 Hang in there! It's the last section.
 
----
-transition: slide-up
----
-
-## DDPM | Quick refresh
-
-* Before proceeding, here's a recap of the closed forms we have:
-
-<v-click>
-
-$$
-\color{#44cb75}q(x_t \mid x_0) = \mathcal{N}(x_t \mid \sqrt{\bar\alpha_t} x_0, (1-\bar\alpha_t)I )
-$$
-
-</v-click>
-
-<v-click>
-
-$$
-\color{#22d3ee}q\left(x_{t-1}\mid x_t, x_0\right) = \mathcal N( x_{t-1}; \color{#fb923c}\tilde\mu(x_t, x_0)\color{#22d3ee}, \tilde\beta_t I )
-$$
-
-</v-click>
-
-<v-click>
-
-$$
-\color{#fb923c}\tilde\mu(x_t, x_0) = \frac{\sqrt{\bar{\alpha}_{t-1}}\beta_t}{1-\bar{\alpha}_t}x_0 +\frac{\sqrt{\alpha_t}(1-\bar{\alpha}_{t-1})}{1-\bar{\alpha}_t} x_t
-$$
-
-</v-click>
-
-<v-click>
-
-* And our U-Net architecture is trained to approximate $\mu_\theta(x_t, t) \approx \tilde\mu(x_t, x_0)$ such that:
-
-$$
-\color{#22d3ee}p_\theta\left(x_{t-1}\mid x_t\right) = \mathcal N( x_{t-1}; \color{#fb923c}\mu_\theta(x_t, t) \color{#22d3ee}, \tilde\beta_t I )
-$$
-
-</v-click>
 
 ---
 transition: slide-up
 ---
 
-## DDPM | Noise reparameterization
+<!-- where $z \sim \mathcal{N}(0,I)$ -->
+
+## DDPM | Predicting the noise
+
+<div class="flex flex-row">
+
+<div class="w-60%">
+
+<v-clicks>
+
+*  $x_{t-1} = \tilde{\mu}(x_t, x_0) + \sqrt{\tilde\beta_t}z$  &emsp; &emsp; &emsp; 
+
+* $\tilde\mu(x_t, x_0) = \frac{\sqrt{\bar{\alpha}_{t-1}}\beta_t}{1-\bar{\alpha}_t}x_0 +\frac{\sqrt{\alpha_t}(1-\bar{\alpha}_{t-1})}{1-\bar{\alpha}}x_t$
+
+* $x_t = \sqrt{\bar\alpha_t}x_0 + \sqrt{1-\bar{\alpha_t}}\epsilon$
+
+* $x_0 = \frac{1}{\sqrt{\bar\alpha_t}}(x_t - \sqrt{1-\bar\alpha_t} \epsilon)$
+
+* $\tilde\mu(x_t, \epsilon) = \frac{1}{\sqrt{\alpha_t}}(x_t - \frac{\beta_t}{\sqrt{1 - \bar\alpha_t}} \epsilon)$
+
+</v-clicks>
 
 <v-click>
 
-* We can sample from $q(x_t \mid x_0)$ by using the reparameterization trick:
+Just predict the noise:
 
-<img src="/diagrams/closed_form_1.drawio.png" class="w-70% mt-5">
+* $\mu_\theta(x_t, t) = \frac{1}{\sqrt{\alpha_t}}(x_t - \frac{\beta_t}{\sqrt{1 - \bar\alpha_t}} \epsilon_\theta(x_t, t))$
 
 </v-click>
 
-<v-click>
-
-* We can express $x_0$ as a function of $x_t$ and $\epsilon$
-
-<img src="/diagrams/get_x0_out.drawio.png" class="w-85% mt-2">
-
-</v-click>
-
-
----
-transition: slide-up
----
-
-## DDPM | Noise reparameterization
-
-<v-click>
-
-* Replace $x_0$ from $\tilde\mu(x_t, x_0)$ and introduce a dependency on $\epsilon$:
-
-</v-click>
-
-<v-click>
-
-<div class="w-100% flex flex-row justify-center">
-<img src="/diagrams/change_dep_on_mu.drawio.png" class="w-85% mt-2">
 </div>
 
-</v-click>
 
+<div class="w-40% text-center">
+
+<div v-click='1' class="mt-8">
+
+$z \sim \mathcal{N}(0,I)$
+
+</div>
+
+
+<div v-click='3' class="mt-16">
+
+$\epsilon  \sim \mathcal{N}(0,I)$
+
+</div>
+
+</div>
+
+</div>
 
 ---
 layout: image
@@ -517,32 +488,12 @@ image: diagrams/explanation.png
 ---
 
 ---
-transition: slide-up
+transition: slide-left
 ---
 
-## DDPM | Predicting the noise
-
-<v-click>
-
-* Key idea: predict the noise using the U-Net $\epsilon_\theta(x_t, t) \approx \epsilon$
-
-</v-click>
-
-<v-click>
-
-* Use the predicted noise to get the mean as follows:
-
-$$
-\mu_\theta(x_t, t) = \frac{1}{\sqrt{\alpha_t}}\left( x_t - \frac{\beta_t}{\sqrt{1-\bar{\alpha_t}}} \color{#44cb75}\epsilon_\theta(x_t, t) \color{white} \right)
-$$
-
-</v-click>
-
-<v-click>
+## DDPM | A trivial training algorithm
 
 Training is trivial:
-
-</v-click>
 
 <v-clicks>
 
@@ -553,3 +504,10 @@ Training is trivial:
 * Minimize $\lVert \hat\epsilon - \epsilon \rVert_2^2$
 
 </v-clicks>
+
+---
+transition: slide-up
+layout: statement
+---
+
+Q & A
