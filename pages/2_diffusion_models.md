@@ -27,7 +27,7 @@ transition: slide-left
 
 ## DDPM | The diffusion process
 
-* Both forward and reverse processes are formalized as a Markov chains, therefore:
+* Both forward and reverse processes are formalized as a Markovian processes, therefore:
     * $q(x_t \mid x_{t-1}, \dots, x_0) = q(x_t \mid x_{t-1})$
     * $p(x_{t-1} \mid x_t, \dots, x_T) = p(x_{t-1} \mid x_t)$
 
